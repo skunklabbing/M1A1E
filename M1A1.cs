@@ -11,6 +11,7 @@ using GHPC.Camera;
 using GHPC.Player;
 using GHPC.Weaponry;
 using ModUtil;
+using GHPC.AI.Sensors;
 
 namespace M1A1Abrams
 {
@@ -242,7 +243,6 @@ namespace M1A1Abrams
                     vic.TargetSpotterSettings._sightDistance = 4500f;
                     vic.TargetSpotterSettings._nightSightDistanceIdeal = 4500f;
                     vic.TargetSpotterSettings._nightSightDistancePassive = 4500f;
-
                     vic._friendlyName += "+";
                 }
 
