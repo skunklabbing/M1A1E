@@ -7,7 +7,7 @@ using UnityEngine;
 using GHPC.Vehicle;
 using ModUtil;
 
-[assembly: MelonInfo(typeof(M1A1AbramsMod), "M1A1 Abrams", "1.3.2B", "ATLAS")]
+[assembly: MelonInfo(typeof(M1A1AbramsMod), "M1A1 Abrams", "1.3.3", "ATLAS")]
 [assembly: MelonGame("Radian Simulations LLC", "GHPC")]
 
 namespace M1A1Abrams
@@ -47,19 +47,13 @@ namespace M1A1Abrams
                 AssetUtil.ReleaseVanillaAssets();
             }
 
-            //TODO why is this needed?        
-            // similar issue in PIL :(
-            if (scene_name == "GT02_Bolder_Limit")
-            {
-                AssetUtil.LoadVanillaVehicle("M1");
-            }
-
             if (Util.menu_screens.Contains(scene_name)) return;
 
             gameManager = GameObject.Find("_APP_GHPC_");
 
             if (gameManager == null) return;
 
+            StateController.RunOrDefer(GameState.PlayerReady, new GameStateEventHandler(AssetUtil.ReleaseTempVanillaAssetsDeferred), GameStatePriority.Medium);
             StateController.RunOrDefer(GameState.GameReady, new GameStateEventHandler(OnGameReady), GameStatePriority.Medium);
 
             MPAT.Init();
