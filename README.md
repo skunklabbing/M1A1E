@@ -4,7 +4,7 @@ Adds a variety of addons to ATLAS' M1A1 mod
 ### Armor
 - Side Composite Armor, 3 layers of effective armor
 - Cheek Applique, 2 layers of effective armor
-- - DU Package extends out to turret side armor and hull armor
+- DU Package extends out to turret side armor and hull armor
 
 ### Systems
 - Trophy Hard-kill System
