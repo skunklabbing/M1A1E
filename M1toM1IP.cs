@@ -5,7 +5,6 @@ using GHPC.Mission;
 using GHPC;
 using UnityEngine;
 using HarmonyLib;
-using ModUtil;
 
 namespace M1A1Abrams
 {
@@ -23,7 +22,6 @@ namespace M1A1Abrams
             if (uniqueName == "M1" && conversion_reqd)
             {
                 __state = true;
-                AssetUtil.TempLoadVanillaVehicle("M1");
                 uniqueName = "M1IP";
             }
         }

@@ -51,13 +51,31 @@ namespace M1A1Abrams
         public static AmmoCodexScriptable ammo_codex_m829a3;
         public static AmmoType ammo_m829a3;
 
+        public static AmmoClipCodexScriptable clip_codex_m829a4;
+        public static AmmoType.AmmoClip clip_m829a4;
+        public static AmmoCodexScriptable ammo_codex_m829a4;
+        public static AmmoType ammo_m829a4;
+
+        public static AmmoClipCodexScriptable clip_codex_x900a1;
+        public static AmmoType.AmmoClip clip_x900a1;
+        public static AmmoCodexScriptable ammo_codex_x900a1;
+        public static AmmoType ammo_x900a1;
+
+        public static AmmoClipCodexScriptable clip_codex_x901a1;
+        public static AmmoType.AmmoClip clip_x901a1;
+        public static AmmoCodexScriptable ammo_codex_x901a1;
+        public static AmmoType ammo_x901a1;
+
         public static GameObject ammo_m827_vis = null;
         public static GameObject ammo_m829_vis = null;
         public static GameObject ammo_m829a1_vis = null;
         public static GameObject ammo_m829a2_vis = null;
         public static GameObject ammo_m829a3_vis = null;
+        public static GameObject ammo_m829a4_vis = null;
+        public static GameObject ammo_x900a1_vis = null;
         public static GameObject ammo_m830_vis = null;
         public static GameObject ammo_m830a1_vis = null;
+        public static GameObject ammo_x901a1_vis = null;
 
 
         public override void UnloadDynamicAssets()
@@ -67,6 +85,8 @@ namespace M1A1Abrams
             GameObject.DestroyImmediate(ammo_m829a1_vis);
             GameObject.DestroyImmediate(ammo_m829a2_vis);
             GameObject.DestroyImmediate(ammo_m829a3_vis);
+            GameObject.DestroyImmediate(ammo_m829a4_vis);
+            GameObject.DestroyImmediate(ammo_x900a1_vis);
             GameObject.DestroyImmediate(ammo_m830_vis);
             GameObject.DestroyImmediate(ammo_m830a1_vis);
         }
@@ -224,7 +244,7 @@ namespace M1A1Abrams
                     new AmmoType.ArmorOptimization() {
                         Armor = get_codex(relikt_type),
                         RhaRatio = 0.25f
-                    }
+                    },
                 };
             }
 
@@ -242,6 +262,69 @@ namespace M1A1Abrams
             clip_codex_m829a3.name = "clip_m829a3";
             clip_codex_m829a3.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m829a3.ClipType = clip_m829a3;
+
+            // m829a4
+            ammo_m829a4 = new AmmoType();
+            Util.ShallowCopy(ammo_m829a4, Assets.ammo_m833);
+            ammo_m829a4.Name = "M829A4 APFSDS-T";
+            ammo_m829a4.Caliber = 120;
+            ammo_m829a4.RhaPenetration = 825f;
+            ammo_m829a4.SpallMultiplier = 1.3f;
+            ammo_m829a4.MaxSpallRha = 24f;
+            ammo_m829a4.MinSpallRha = 7f;
+            ammo_m829a4.MuzzleVelocity = 1559f;
+            ammo_m829a4.Mass = 5.8f;
+            ammo_m829a4.SectionalArea = 0.00089f;
+            ammo_m829a4.Coeff = 0.25f;
+            ammo_m829a4.CachedIndex = -1;
+
+            ammo_codex_m829a4 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            ammo_codex_m829a4.AmmoType = ammo_m829a4;
+            ammo_codex_m829a4.name = "ammo_m829a4";
+
+            clip_m829a4 = new AmmoType.AmmoClip();
+            clip_m829a4.Capacity = 1;
+            clip_m829a4.Name = "M829A4 APFSDS-T";
+            clip_m829a4.MinimalPattern = new AmmoCodexScriptable[1];
+            clip_m829a4.MinimalPattern[0] = ammo_codex_m829a4;
+
+            clip_codex_m829a4 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            clip_codex_m829a4.name = "clip_m829a4";
+            clip_codex_m829a4.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
+            clip_codex_m829a4.ClipType = clip_m829a4;
+
+            //overkill apfsds
+            ammo_x900a1 = new AmmoType();
+            Util.ShallowCopy(ammo_x900a1, Assets.ammo_m833);
+            ammo_x900a1.Name = "X900A1 Armor Piercing Fin Stabilized Discarding Sabot Experimental Ultra-Pressure Shell";
+            ammo_x900a1.Caliber = 120;
+            ammo_x900a1.RhaPenetration = 1163f;
+            ammo_x900a1.SpallMultiplier = 2f;
+            ammo_x900a1.MaxSpallRha = 30f;
+            ammo_x900a1.MinSpallRha = 5f;
+            ammo_x900a1.ForcedSpallAngle = 75f;
+            ammo_x900a1.CertainRicochetAngle = 2f;
+            ammo_x900a1.Normalize = true;
+            ammo_x900a1.MuzzleVelocity = 2134f;
+            ammo_x900a1.Mass = 7.2f;
+            ammo_x900a1.SectionalArea = 0.001f;
+            ammo_x900a1.Coeff = 0.31f;
+            ammo_x900a1.CachedIndex = -1;
+
+            ammo_codex_x900a1 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            ammo_codex_x900a1.AmmoType = ammo_x900a1;
+            ammo_codex_x900a1.name = "ammo_x900a1";
+
+            clip_x900a1 = new AmmoType.AmmoClip();
+            clip_x900a1.Capacity = 1;
+            clip_x900a1.Name = "X900A1 APFSDS-EUPS";
+            clip_x900a1.MinimalPattern = new AmmoCodexScriptable[1];
+            clip_x900a1.MinimalPattern[0] = ammo_codex_x900a1;
+
+            clip_codex_x900a1 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            clip_codex_x900a1.name = "clip_x900a1";
+            clip_codex_x900a1.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
+            clip_codex_x900a1.ClipType = clip_x900a1;
 
             // m830
             ammo_m830 = new AmmoType();
@@ -331,6 +414,39 @@ namespace M1A1Abrams
 
             MPAT.AddMPATFuse(ammo_m830a1);
 
+            //overkill heat
+            ammo_x901a1 = new AmmoType();
+            Util.ShallowCopy(ammo_x901a1, Assets.ammo_m456);
+            ammo_x901a1.Name = "X901A1 High Explosive Anti Tank Experimental Three-Piece Shell";
+            ammo_x901a1.Caliber = 120;
+            ammo_x901a1.RhaPenetration = 1131;
+            ammo_x901a1.TntEquivalentKg = 2.4f;
+            ammo_x901a1.MuzzleVelocity = 1678f;
+            ammo_x901a1.Mass = 15.8f;
+            ammo_x901a1.CertainRicochetAngle = 8.0f;
+            ammo_x901a1.ShatterOnRicochet = false;
+            ammo_x901a1.DetonateSpallCount = 50;
+            ammo_x901a1.Tandem = true;
+            ammo_x901a1.SphericalSpall = true;
+            ammo_x901a1.SectionalArea = 0.0045f;
+            ammo_x901a1.CachedIndex = -1;
+
+            ammo_codex_x901a1 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            ammo_codex_x901a1.AmmoType = ammo_x901a1;
+            ammo_codex_x901a1.name = "ammo_x901a1";
+
+            clip_x901a1 = new AmmoType.AmmoClip();
+            clip_x901a1.Capacity = 3;
+            clip_x901a1.Name = "X901A1 HEAT-X/3PS";
+            clip_x901a1.MinimalPattern = new AmmoCodexScriptable[1];
+            clip_x901a1.MinimalPattern[0] = ammo_codex_x901a1;
+
+            clip_codex_x901a1 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            clip_codex_x901a1.name = "clip_x901a1";
+            clip_codex_x901a1.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
+            clip_codex_x901a1.ClipType = clip_x901a1;
+
+
             ammo_m827_vis = GameObject.Instantiate(Assets.ammo_m833.VisualModel);
             ammo_m827_vis.name = "M829 visual";
             ammo_m827.VisualModel = ammo_m827_vis;
@@ -361,6 +477,18 @@ namespace M1A1Abrams
             ammo_m829a3.VisualModel.GetComponent<AmmoStoredVisual>().AmmoType = ammo_m829a3;
             ammo_m829a3.VisualModel.GetComponent<AmmoStoredVisual>().AmmoScriptable = ammo_codex_m829a3;
 
+            ammo_m829a4_vis = GameObject.Instantiate(Assets.ammo_m833.VisualModel);
+            ammo_m829a4_vis.name = "M829A4 visual";
+            ammo_m829a4.VisualModel = ammo_m829a4_vis;
+            ammo_m829a4.VisualModel.GetComponent<AmmoStoredVisual>().AmmoType = ammo_m829a4;
+            ammo_m829a4.VisualModel.GetComponent<AmmoStoredVisual>().AmmoScriptable = ammo_codex_m829a4;
+
+            ammo_x900a1_vis = GameObject.Instantiate(Assets.ammo_m833.VisualModel);
+            ammo_x900a1_vis.name = "X900A1 visual";
+            ammo_x900a1.VisualModel = ammo_x900a1_vis;
+            ammo_x900a1.VisualModel.GetComponent<AmmoStoredVisual>().AmmoType = ammo_x900a1;
+            ammo_x900a1.VisualModel.GetComponent<AmmoStoredVisual>().AmmoScriptable = ammo_codex_x900a1;
+
             ammo_m830_vis = GameObject.Instantiate(Assets.ammo_m456.VisualModel);
             ammo_m830_vis.name = "M830 visual";
             ammo_m830.VisualModel = ammo_m830_vis;
@@ -373,14 +501,23 @@ namespace M1A1Abrams
             ammo_m830a1.VisualModel.GetComponent<AmmoStoredVisual>().AmmoType = ammo_m830a1;
             ammo_m830a1.VisualModel.GetComponent<AmmoStoredVisual>().AmmoScriptable = ammo_codex_m830a1;
 
+            ammo_x901a1_vis = GameObject.Instantiate(Assets.ammo_m456.VisualModel);
+            ammo_x901a1_vis.name = "X901A1 visual";
+            ammo_x901a1.VisualModel = ammo_x901a1_vis;
+            ammo_x901a1.VisualModel.GetComponent<AmmoStoredVisual>().AmmoType = ammo_x901a1;
+            ammo_x901a1.VisualModel.GetComponent<AmmoStoredVisual>().AmmoScriptable = ammo_codex_x901a1;
+
             Util.CacheAmmo(ammo_m827);
             Util.CacheAmmo(ammo_m829);
             Util.CacheAmmo(ammo_m829a1);
             Util.CacheAmmo(ammo_m829a2);
             Util.CacheAmmo(ammo_m829a3);
+            Util.CacheAmmo(ammo_x900a1);
+            Util.CacheAmmo(ammo_x901a1);
             Util.CacheAmmo(m830a1_forward_frag);
             Util.CacheAmmo(ammo_m830);
             Util.CacheAmmo(ammo_m830a1);
+            Util.CacheAmmo(ammo_m829a4);
 
             ap = new Dictionary<string, AmmoClipCodexScriptable>()
             {
@@ -389,12 +526,15 @@ namespace M1A1Abrams
                 ["M829A1"] = clip_codex_m829a1,
                 ["M829A2"] = clip_codex_m829a2,
                 ["M829A3"] = clip_codex_m829a3,
+                ["M829A4"] = clip_codex_m829a4,
+                ["X900A1"] = clip_codex_x900a1,
             };
 
             heat = new Dictionary<string, AmmoClipCodexScriptable>()
             {
                 ["M830"] = clip_codex_m830,
                 ["M830A1"] = clip_codex_m830a1,
+                ["X901A1"] = clip_codex_x901a1,
             };
         }
     }
