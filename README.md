@@ -21,4 +21,5 @@ Adds a variety of addons to ATLAS' M1A1 mod
 ### DISCLAIMER
 Models that are untextured are planned to be textured after finishing whatever is planned before
 
-<img width="1680" height="990" alt="Screenshot 2026-07-26 191458" src="https://github.com/user-attachments/assets/3a6ed093-7bfd-44c9-b837-e29cdf81cdca" />
+<img width="1919" height="1079" alt="Screenshot 2026-07-29 191944" src="https://github.com/user-attachments/assets/bff221d3-1e0f-4bfe-aa7e-14336cf45777" />
+
