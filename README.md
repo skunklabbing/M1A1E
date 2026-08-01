@@ -13,6 +13,14 @@ If you get an error launching through Steam you will need to run the game execut
 ![Screenshot_9](https://github.com/thebeninator/M1A1Abrams/assets/89621837/0fcbec7f-dc15-4ef2-850e-8e48c5783260)
 ![image](https://github.com/thebeninator/M1A1Abrams/assets/89621837/c80ef9c8-7e42-485c-957e-6cba0dd20c0c)
 
+---
+
+Features the preset system for customizable randomization
+
+<img width="1146" height="611" alt="how_the_preset_system_works" src="https://github.com/user-attachments/assets/a1db3167-fe3e-4bc4-a45f-47e382da0fbd" />
+
+---
+
 <p>
 Converts all M1IPs to M1A1s equipped with: 
 	<ul>
@@ -32,7 +40,7 @@ Converts all M1IPs to M1A1s equipped with:
 	- Horizontal sight stabilization for M1A1/E1s when applying lead 
 	- Commander CITV
 	- Depleted uranium cheek armour for M1A1s
-	- M153 CROWS
+	- M153 CROWS <CURRENTLY NOT FUNCTIONAL>
 	- Different gunner's thermal settings
    
 # Conversions
