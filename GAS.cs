@@ -18,19 +18,10 @@ namespace M1A1Abrams
         public static ReticleSO reticleSO_ap;
         public static ReticleMesh.CachedReticle reticle_cached_ap;
 
-
         public override void UnloadDynamicAssets()
         {
             ScriptableObject.DestroyImmediate(reticleSO_heat);
             ScriptableObject.DestroyImmediate(reticleSO_ap);
-        }
-
-        public override void LoadDynamicAssets()
-        {
-            if (!AssetUtil.VehicleInMission("_M1 (variant)") && !M1A1.m1e1.Value && ReticleMesh.cachedReticles.ContainsKey("M1_105_GAS_APFSDS")) return;
-
-            Vehicle m1ip = AssetUtil.LoadVanillaVehicle("M1IP");
-            m1ip.transform.Find("Gun Scripts/Aux sight (GAS)").GetComponent<UsableOptic>().reticleMesh.Load();
         }
 
         public static void Add(Transform gas, WeaponSystem[] exclusives) {
@@ -52,6 +43,12 @@ namespace M1A1Abrams
 
         public static void Create(AmmoCodexScriptable sabot, AmmoCodexScriptable heat) {
             if (reticleSO_ap != null) return;
+
+            if (!ReticleMesh.cachedReticles.ContainsKey("M1_105_GAS_APFSDS"))
+            {
+                Vehicle m1ip = AssetUtil.LoadVanillaVehicle("M1IP");
+                m1ip.transform.Find("Gun Scripts/Aux sight (GAS)").GetComponent<UsableOptic>().reticleMesh.Load();
+            }
 
             reticleSO_ap = ScriptableObject.Instantiate(ReticleMesh.cachedReticles["M1_105_GAS_APFSDS"].tree);
             reticleSO_ap.name = "120mm_gas_ap";

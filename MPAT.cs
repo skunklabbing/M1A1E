@@ -4,58 +4,87 @@ using GHPC.Weapons;
 using HarmonyLib;
 using GHPC.Player;
 using GHPC.UI.Hud;
+using GHPC.Utility;
+using GHPC.PhysicsHelpers;
+using GHPC;
+using GHPC.Effects;
+using System.Linq;
 
 namespace M1A1Abrams
 {
-    public class MPAT_Switch : MonoBehaviour
+    public class MPATManager : MonoBehaviour
     {
-        public bool activated = false;
+        public bool ProximityActive { get; set; }
+        public int AmmoKeyIdx { get; set; }
+        public int AmmoCachedIdx { get; set; }
+
+
         private float cd = 0f;
         private WeaponSystem weapon = null;
         private PlayerInput player_manager;
+        private int self_id;
+
 
         void Awake()
         {
             weapon = GetComponent<WeaponsManager>().Weapons[0].Weapon;
-            player_manager = GameObject.Find("_APP_GHPC_").GetComponent<PlayerInput>();
+            weapon.Fired += OnFired;
+            self_id = gameObject.GetInstanceID();
         }
 
         void Update()
         {
             cd -= Time.deltaTime;
 
-            if (player_manager.CurrentPlayerUnit.gameObject.GetInstanceID() != gameObject.GetInstanceID()) return;
+            if (PlayerInput.Instance.CurrentPlayerUnit.gameObject.GetInstanceID() != self_id) return;
 
-            if (Input.GetKey(KeyCode.Mouse2) && cd <= 0f && weapon.CurrentAmmoType == Ammo_120mm.ammo_m830a1)
+            if (
+                InputUtil.MainPlayer.GetButtonDoublePressDown(PlayerInput.ammoKeys[AmmoKeyIdx]) && 
+                weapon.CurrentAmmoType.CachedIndex == AmmoCachedIdx
+            )
             {
-                cd = 0.2f;
-
-                activated = !activated;
+                ProximityActive = !ProximityActive;
             }
+        }
+
+        private void OnFired(AmmoType ammo, LiveRound live_round)
+        {
+            if (ammo.CachedIndex != AmmoCachedIdx || !ProximityActive) return;
+
+            live_round.gameObject.AddComponent<MPAT>();
         }
     }
 
     public class MPAT : MonoBehaviour
     {
-        internal GHPC.Weapons.LiveRound live_round;
-        internal static GameObject prox_fuse;
-        internal static HashSet<string> prox_ammos = new HashSet<string>();
         public bool detonated = false;
 
-        // must be called at least once 
-        public static void Init()
+        private LiveRound live_round;
+        private static float[] ranges = new float[] { 10f, 30f };
+        private AmmoType dummy_he;
+
+        void Awake()
         {
-            if (prox_fuse) return;
-            prox_fuse = new GameObject("mpat prox fuse");
-            prox_fuse.layer = 8;
-            prox_fuse.SetActive(false);
-            prox_fuse.AddComponent<MPAT>();
+            live_round = this.GetComponent<LiveRound>();
+
+            if (dummy_he != null) return;
+
+            dummy_he = new AmmoType();
+            dummy_he.DetonateEffect = Resources.FindObjectsOfTypeAll<GameObject>().Where(o => o.name == "HE_explosion").First();
+            dummy_he.ImpactEffectDescriptor = new ParticleEffectsManager.ImpactEffectDescriptor()
+            {
+                HasImpactEffect = true,
+                ImpactCategory = ParticleEffectsManager.Category.HighExplosive,
+                EffectSize = ParticleEffectsManager.EffectSize.MainGun,
+                RicochetType = ParticleEffectsManager.RicochetType.None,
+                Flags = ParticleEffectsManager.ImpactModifierFlags.Large,
+                MinFilterStrictness = ParticleEffectsManager.FilterStrictness.Low
+            };
         }
 
-        public static void AddMPATFuse(AmmoType ammo_type)
+        void OnDisable()
         {
-            if (prox_ammos.Contains(ammo_type.Name)) return;
-            prox_ammos.Add(ammo_type.Name);
+            Component.Destroy(this);
         }
 
         void Detonate()
@@ -68,29 +97,62 @@ namespace M1A1Abrams
             live_round._materialHit = GHPC.Effects.ParticleEffectsManager.SurfaceMaterial.None;
             live_round.createExplosion(hitSurface: false, 0f, Vector3.zero, 0.03f);
             live_round.Detonate();
+
+            ParticleEffectsManager.Instance.CreateImpactEffectOfType(dummy_he,
+                ParticleEffectsManager.FusedStatus.Fuzed, ParticleEffectsManager.SurfaceMaterial.None, false, transform.position);
+
+            for (int i = 0; i < 25; i++)
+            {
+                GHPC.Weapons.LiveRound frag;
+                frag = LiveRoundMarshaller.Instance.GetRoundOfVisualType(LiveRoundMarshaller.LiveRoundVisualType.Spall)
+                    .GetComponent<GHPC.Weapons.LiveRound>();
+                frag.Info = Ammo_120mm.m830a1_forward_frag;
+                frag.CurrentSpeed = 600f;
+                frag.MaxSpeed = 600f;
+                frag.IsSpall = false;
+                frag.Shooter = live_round.Shooter;
+                frag.transform.position = live_round.transform.position;
+                frag.transform.forward = Quaternion.Euler(
+                    UnityEngine.Random.Range(-5f, 5f),
+                    UnityEngine.Random.Range(-5f, 5f),
+                    UnityEngine.Random.Range(-5f, 5f)
+                ) * live_round.transform.forward;
+                frag.Init(live_round, null);
+                frag.name = "mpat forward frag " + i;
+            }
         }
 
         void Update()
         {
-            if (!live_round) return;
+            Vector3 pos = this.transform.position;
+            Vector3[] dirs = new Vector3[]
+            {
+                this.transform.forward,
+                Vector3.down
+            };
 
-            RaycastHit hit;
-            Vector3 pos = live_round.transform.position;
-
-            if (Physics.Raycast(pos, live_round.transform.forward, out hit, 10f, 1 << 8))
-                if (hit.collider.CompareTag("Penetrable"))
+            for (int i = 0; i < dirs.Length; i++)
+            {
+                RaycastHit hit;
+                Ray ray = new Ray(pos, dirs[i]);
+                if (
+                    RaycastColliderUtils.Raycast(ray, out hit, ranges[i], ConstantsAndInfoManager.Instance.LaserRangefinderLayerMask)
+                    && hit.collider.CompareTag("Penetrable")
+                )
+                {
                     Detonate();
+                    return;
+                }
+            }
 
-            RaycastHit hit2;
-            if (Physics.Raycast(pos, Vector3.down, out hit2, 30f, 1 << 8))
-                if (hit2.collider.CompareTag("Penetrable"))
-                    Detonate();
-
-            RaycastHit hit3;
-            if (Physics.SphereCast(pos, 3f, live_round.transform.forward, out hit3, 0.1f, 1 << 8))
-                if (hit3.collider.CompareTag("Penetrable"))
-                    Detonate();
-
+            RaycastHit hit_sphere;
+            if (
+                Physics.SphereCast(pos, 3f, this.transform.forward, out hit_sphere, 0.1f, ConstantsAndInfoManager.Instance.LaserRangefinderLayerMask) 
+                && hit_sphere.collider.CompareTag("Penetrable")
+            )
+            {
+                Detonate();
+            }
         }
     }
 
@@ -99,61 +161,11 @@ namespace M1A1Abrams
     {
         private static void Postfix(WeaponHud __instance)
         {
-            MPAT_Switch mpat_switch = __instance?._playerInput?.CurrentPlayerUnit?.GetComponent<MPAT_Switch>();
+            MPATManager mpat_manager = __instance._playerInput?.CurrentPlayerUnit?.GetComponent<MPATManager>();
 
-            if (mpat_switch == null || !mpat_switch.activated) return;
+            if (mpat_manager == null || !mpat_manager.ProximityActive) return;
 
             __instance._hudText.text = __instance._sb.ToString() + "\nMPAT Proximity";
-        }
-    }
-
-    [HarmonyPatch(typeof(GHPC.Weapons.LiveRound), "Start")]
-    public static class SpawnProximityFuse
-    {
-        private static void Prefix(GHPC.Weapons.LiveRound __instance)
-        {
-            if (MPAT.prox_ammos.Contains(__instance.Info.Name) && __instance.gameObject.transform.Find("mpat prox fuse(Clone)") == null)
-            {
-                GameObject p = GameObject.Instantiate(MPAT.prox_fuse, __instance.transform);
-                p.GetComponent<MPAT>().live_round = __instance;
-                p.SetActive(__instance.Shooter.gameObject.GetComponent<MPAT_Switch>().activated);
-            }
-            else if (__instance.gameObject.transform.Find("mpat prox fuse(Clone)"))
-            {
-                GameObject.DestroyImmediate(__instance.gameObject.transform.Find("mpat prox fuse(Clone)").gameObject);
-            }
-        }
-    }
-
-    [HarmonyPatch(typeof(GHPC.Weapons.LiveRound), "createExplosion")]
-    public class ForwardBurst
-    {
-        private static bool Prefix(GHPC.Weapons.LiveRound __instance)
-        {
-            if (!__instance.gameObject.GetComponentInChildren<MPAT>()) return true;
-            if (!__instance.gameObject.GetComponentInChildren<MPAT>().detonated) return true;
-
-            for (int i = 0; i < 25; i++)
-            {
-                GHPC.Weapons.LiveRound component;
-                component = LiveRoundMarshaller.Instance.GetRoundOfVisualType(LiveRoundMarshaller.LiveRoundVisualType.Spall)
-                    .GetComponent<GHPC.Weapons.LiveRound>();
-                component.Info = Ammo_120mm.m830a1_forward_frag;
-                component.CurrentSpeed = 600f;
-                component.MaxSpeed = 600f;
-                component.IsSpall = false;
-                component.Shooter = __instance.Shooter;
-                component.transform.position = __instance.transform.position;
-                component.transform.forward = Quaternion.Euler(
-                    UnityEngine.Random.Range(-5f, 5f),
-                    UnityEngine.Random.Range(-5f, 5f),
-                    UnityEngine.Random.Range(-5f, 5f)
-                ) * __instance.transform.forward;
-                component.Init(__instance, null);
-                component.name = "mpat forward frag " + i;
-            }
-
-            return true;
         }
     }
 }

@@ -85,7 +85,7 @@ namespace M1A1Abrams
             ammo_m827.SpallMultiplier = 1.15f;
             ammo_m827.CachedIndex = -1;
 
-            ammo_codex_m827 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m827);
             ammo_codex_m827.AmmoType = ammo_m827;
             ammo_codex_m827.name = "ammo_m827";
 
@@ -95,7 +95,7 @@ namespace M1A1Abrams
             clip_m827.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m827.MinimalPattern[0] = ammo_codex_m827;
 
-            clip_codex_m827 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m827);
             clip_codex_m827.name = "clip_m827";
             clip_codex_m827.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m827.ClipType = clip_m827;
@@ -113,7 +113,7 @@ namespace M1A1Abrams
             ammo_m829.Coeff = 0.20f;
             ammo_m829.CachedIndex = -1;
 
-            ammo_codex_m829 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m829);
             ammo_codex_m829.AmmoType = ammo_m829;
             ammo_codex_m829.name = "ammo_m829";
 
@@ -123,7 +123,7 @@ namespace M1A1Abrams
             clip_m829.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m829.MinimalPattern[0] = ammo_codex_m829;
 
-            clip_codex_m829 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m829);
             clip_codex_m829.name = "clip_m829";
             clip_codex_m829.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m829.ClipType = clip_m829;
@@ -143,7 +143,7 @@ namespace M1A1Abrams
             ammo_m829a1.Coeff = 0.20f;
             ammo_m829a1.CachedIndex = -1;
 
-            ammo_codex_m829a1 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m829a1);
             ammo_codex_m829a1.AmmoType = ammo_m829a1;
             ammo_codex_m829a1.name = "ammo_m829a1";
 
@@ -153,7 +153,7 @@ namespace M1A1Abrams
             clip_m829a1.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m829a1.MinimalPattern[0] = ammo_codex_m829a1;
 
-            clip_codex_m829a1 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m829a1);
             clip_codex_m829a1.name = "clip_m829a1";
             clip_codex_m829a1.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m829a1.ClipType = clip_m829a1;
@@ -173,7 +173,7 @@ namespace M1A1Abrams
             ammo_m829a2.Coeff = 0.20f;
             ammo_m829a2.CachedIndex = -1;
 
-            ammo_codex_m829a2 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m829a2);
             ammo_codex_m829a2.AmmoType = ammo_m829a2;
             ammo_codex_m829a2.name = "ammo_m829a2";
 
@@ -183,7 +183,7 @@ namespace M1A1Abrams
             clip_m829a2.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m829a2.MinimalPattern[0] = ammo_codex_m829a2;
 
-            clip_codex_m829a2 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m829a2);
             clip_codex_m829a2.name = "clip_m829a2";
             clip_codex_m829a2.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m829a2.ClipType = clip_m829a2;
@@ -228,7 +228,7 @@ namespace M1A1Abrams
                 };
             }
 
-            ammo_codex_m829a3 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m829a3);
             ammo_codex_m829a3.AmmoType = ammo_m829a3;
             ammo_codex_m829a3.name = "ammo_m829a3";
 
@@ -238,7 +238,7 @@ namespace M1A1Abrams
             clip_m829a3.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m829a3.MinimalPattern[0] = ammo_codex_m829a3;
 
-            clip_codex_m829a3 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m829a3);
             clip_codex_m829a3.name = "clip_m829a3";
             clip_codex_m829a3.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m829a3.ClipType = clip_m829a3;
@@ -258,7 +258,7 @@ namespace M1A1Abrams
             ammo_m830.SectionalArea = 0.0095f;
             ammo_m830.CachedIndex = -1;
 
-            ammo_codex_m830 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m830);
             ammo_codex_m830.AmmoType = ammo_m830;
             ammo_codex_m830.name = "ammo_m830";
 
@@ -268,7 +268,7 @@ namespace M1A1Abrams
             clip_m830.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m830.MinimalPattern[0] = ammo_codex_m830;
 
-            clip_codex_m830 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m830);
             clip_codex_m830.name = "clip_m830";
             clip_codex_m830.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m830.ClipType = clip_m830;
@@ -291,7 +291,7 @@ namespace M1A1Abrams
             ammo_m830a1.SectionalArea = 0.0055f;
             ammo_m830a1.CachedIndex = -1;
 
-            ammo_codex_m830a1 = ScriptableObject.CreateInstance<AmmoCodexScriptable>();
+            Util.Coalesce(ref ammo_codex_m830a1);
             ammo_codex_m830a1.AmmoType = ammo_m830a1;
             ammo_codex_m830a1.name = "ammo_m830a1";
 
@@ -301,7 +301,7 @@ namespace M1A1Abrams
             clip_m830a1.MinimalPattern = new AmmoCodexScriptable[1];
             clip_m830a1.MinimalPattern[0] = ammo_codex_m830a1;
 
-            clip_codex_m830a1 = ScriptableObject.CreateInstance<AmmoClipCodexScriptable>();
+            Util.Coalesce(ref clip_codex_m830a1);
             clip_codex_m830a1.name = "clip_m830a1";
             clip_codex_m830a1.CompatibleWeaponSystems = new WeaponSystemCodexScriptable[1];
             clip_codex_m830a1.ClipType = clip_m830a1;
@@ -328,8 +328,6 @@ namespace M1A1Abrams
                 MinFilterStrictness = ParticleEffectsManager.FilterStrictness.Low
             };
             m830a1_forward_frag.CachedIndex = -1;
-
-            MPAT.AddMPATFuse(ammo_m830a1);
 
             ammo_m827_vis = GameObject.Instantiate(Assets.ammo_m833.VisualModel);
             ammo_m827_vis.name = "M829 visual";
